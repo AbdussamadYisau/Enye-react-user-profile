@@ -4,13 +4,15 @@ import {Table} from 'react-bootstrap';
 const Records = ({records, keysArr, loading}) => {
     if(loading) {
         return (
-            <div class="d-flex mt-10 justify-content-center ">
-                <div class="spinner-border" role="status">
-                    <span class="visually-hidden"></span>
+            <div className="d-flex mt-10 justify-content-center ">
+                <div className="spinner-border" role="status">
+                    <span className="visually-hidden"></span>
                 </div>
             </div>
         );
     }
+
+    // console.log(records);
 
     return (
         <Table striped bordered hover responsive>
