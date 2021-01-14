@@ -10,7 +10,7 @@ const Records = ({records, keysArr, loading}) => {
         <Table striped bordered hover responsive>
         <thead>
             <tr>
-            <th>#</th>
+            {/* <th>#</th> */}
             {keysArr.map((keyName, index) => (
                 <th key={index}>{keyName}</th>
             ))}
@@ -19,7 +19,7 @@ const Records = ({records, keysArr, loading}) => {
         <tbody>
             {records.map((each, index) => (
             <tr key={index}>
-                <td>{index + 1}</td>
+                {/* <td>{index + 1}</td> */}
                 {Object.entries(each).map(([keyName, val], index) => ( 
                 <td key={index}>{val}</td>
                 ))}

@@ -26,6 +26,7 @@ function App() {
     fetchPosts();
   }, []); 
   
+  console.log(records);
   //  Get current posts
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
