@@ -67,8 +67,9 @@ function App() {
           <Container>
             <h1>Enye React User Profiles</h1>
             <input
-              type="text"
-              placeholder="Search First Name"
+              type='text'
+              className='form-control'
+              placeholder='Search First Name or Last Name'
               onChange={(e) => setSearch(e.target.value)}
             />
 
