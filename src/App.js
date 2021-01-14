@@ -12,7 +12,8 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(20);
-
+  const [search, setSearch] = useState("");
+  const [filteredPatients, setFilteredPatients] = useState([]);
   useEffect(() => {
     const fetchPosts = async () => {
       setLoading(true);
@@ -25,8 +26,17 @@ function App() {
 
     fetchPosts();
   }, []); 
+
+
+  useEffect(() => {
+    setFilteredPatients(
+      records.filter((record) =>
+        record.FirstName.toLowerCase().includes(search.toLowerCase())
+      )
+    );
+  }, [search, records]);
   
-  console.log(records);
+ 
   //  Get current posts
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -39,6 +49,12 @@ function App() {
       <>
         <div>
           <Container>
+            <h1>Enye React User Profiles</h1>
+            <input
+              type="text"
+              placeholder="Search First Name"
+              onChange={(e) => setSearch(e.target.value)}
+            />
             <Records records ={currentPosts} keysArr = {keysArr} loading = {loading} />
             <Pagination postsPerPage={postsPerPage} totalPosts={records.length} paginate={paginate} />
           </Container>

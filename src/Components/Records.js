@@ -3,7 +3,13 @@ import {Table} from 'react-bootstrap';
 
 const Records = ({records, keysArr, loading}) => {
     if(loading) {
-        return <h2>Loading...</h2>;
+        return (
+            <div class="d-flex mt-10 justify-content-center ">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden"></span>
+                </div>
+            </div>
+        );
     }
 
     return (
