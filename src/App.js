@@ -1,4 +1,4 @@
-import React, {useEffect, useState } from 'react'
+import React, {useEffect, useState, useMemo } from 'react'
 import {  } from "module";
 import axios from 'axios'
 import Records from './Components/Records';
@@ -21,7 +21,6 @@ function App() {
       setRecords(res.data.records.profiles);
       setKeysArr(Object.keys(res.data.records.profiles[0]));
       setLoading(false);
-      console.log(res.data.records.profiles);
     }
 
     fetchPosts();
@@ -31,7 +30,8 @@ function App() {
   useEffect(() => {
     setFilteredPatients(
       records.filter((record) =>
-        record.FirstName.toLowerCase().includes(search.toLowerCase())
+        record.FirstName.toLowerCase().includes(search.toLowerCase()) ||
+        record.LastName.toLowerCase().includes(search.toLowerCase())
       )
     );
   }, [search, records]);
@@ -42,9 +42,25 @@ function App() {
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = records.slice(indexOfFirstPost, indexOfLastPost);
 
+  console.log(filteredPatients.length);
+
   //  Change Page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   
+  //  Search Result 
+
+  const searchResult = () => {
+      if (filteredPatients.length === records.length) {
+        return(
+          <Records records ={currentPosts} keysArr = {keysArr} loading = {loading} />
+        );
+      } else {
+        return(
+          <Records records ={filteredPatients} keysArr = {keysArr} loading = {loading} />
+        );
+      }
+  }
+
   return (
       <>
         <div>
@@ -55,8 +71,11 @@ function App() {
               placeholder="Search First Name"
               onChange={(e) => setSearch(e.target.value)}
             />
-            <Records records ={currentPosts} keysArr = {keysArr} loading = {loading} />
-            <Pagination postsPerPage={postsPerPage} totalPosts={records.length} paginate={paginate} />
+
+          {
+            searchResult()
+          }
+          <Pagination postsPerPage={postsPerPage} totalPosts={records.length} paginate={paginate} />
           </Container>
         </div>
       </>
