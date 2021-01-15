@@ -8,16 +8,14 @@ import { Container} from 'react-bootstrap';
 
 function App() {
   const [records, setRecords] = useState([]);
-  const [recordToPrint, setRecordToPrint] = useState(records);
   const [keysArr, setKeysArr] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(20);
   const [search, setSearch] = useState("");
-  const [searchGender, setSearchGender] = useState("");
-  const [searchPayment, setSearchPayment] = useState("");
+  const [searchGender, setSearchGender] = useState("All");
+  const [searchPayment, setSearchPayment] = useState("All");
   
-  const [genderFilter, setGenderFilter] = useState([]);
   const [filteredPatients, setFilteredPatients] = useState([]);
   useEffect(() => {
     const fetchPosts = async () => {
@@ -31,54 +29,53 @@ function App() {
     fetchPosts();
   }, []); 
 
-  useEffect(() => {
-    setFilteredPatients(
-      records.filter((record) =>
-        record.FirstName.toLowerCase().includes(search.toLowerCase()) ||
-        record.LastName.toLowerCase().includes(search.toLowerCase())
-     
-      )
-    );
-  }, [search, records]);
 
-
+  console.log(searchPayment, searchGender);
 
   useEffect(() => {
-    if(searchGender === 'All') {
+    if(searchGender === 'All' && searchPayment === 'All') {
       setFilteredPatients(
         records.filter((record) =>
-          record.Gender.toLowerCase()
+          (record.FirstName.toLowerCase().includes(search.toLowerCase()) ||
+          record.LastName.toLowerCase().includes(search.toLowerCase())) && 
+          (record.Gender.toLowerCase()) &&
+          (record.PaymentMethod.toLowerCase())
+      
         )
       );
-    } else {
+    } else if (searchGender === 'All' && searchPayment !== 'All') {
       setFilteredPatients(
         records.filter((record) =>
-          
-          record.Gender.toLowerCase() === (searchGender.toLowerCase())
-        )
-      );
-    }
-  }, [searchGender, records]);
-
-
-
-  useEffect(() => {
-    if (searchPayment === 'All') {
-      setFilteredPatients(
-        records.filter((record) =>
-          record.PaymentMethod.toLowerCase()
-        )
-      );
-
-    } else {
-      setFilteredPatients(
-        records.filter((record) =>
+          (record.FirstName.toLowerCase().includes(search.toLowerCase()) ||
+          record.LastName.toLowerCase().includes(search.toLowerCase())) && 
+          (record.Gender.toLowerCase()) &&
           record.PaymentMethod.toLowerCase().includes(searchPayment.toLowerCase())
+      
         )
       );
-
+    } else if (searchGender !== 'All' && searchPayment === 'All') {
+      setFilteredPatients(
+        records.filter((record) =>
+          (record.FirstName.toLowerCase().includes(search.toLowerCase()) ||
+          record.LastName.toLowerCase().includes(search.toLowerCase())) && 
+          (record.Gender.toLowerCase() === (searchGender.toLowerCase())) &&
+          record.PaymentMethod.toLowerCase()
+      
+        )
+      );
+    } else {
+      setFilteredPatients(
+        records.filter((record) =>
+          (record.FirstName.toLowerCase().includes(search.toLowerCase()) ||
+          record.LastName.toLowerCase().includes(search.toLowerCase())) && 
+          (record.Gender.toLowerCase() === (searchGender.toLowerCase())) &&
+          record.PaymentMethod.toLowerCase().includes(searchPayment.toLowerCase())
+      
+        )
+      );
     }
-  }, [searchPayment, records]);
+  }, [search, searchGender, searchPayment, records]);
+
   
  
   //  Get current posts
@@ -158,4 +155,3 @@ function App() {
 }
 
 export default App;
-
